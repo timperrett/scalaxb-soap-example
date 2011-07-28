@@ -43,12 +43,12 @@ trait XMLProtocol extends scalaxb.XMLStandardTypes {
   }
 
 
-  trait WeatherSoap12s { this: scalaxb.SoapClients =>
+  trait WeatherSoap12Bindings { this: scalaxb.SoapClients =>
     lazy val targetNamespace: Option[String] = Some("http://litwinconsulting.com/webservices/")
-    lazy val service: WeatherSoap = new WeatherSoap12 {}
+    lazy val service: WeatherSoap = new WeatherSoap12Binding {}
     lazy val baseAddress = new java.net.URI("http://www.deeptraining.com/webservices/weather.asmx")
 
-    trait WeatherSoap12 extends WeatherSoap {
+    trait WeatherSoap12Binding extends WeatherSoap {
       def getWeather(city: Option[String]): Either[scalaxb.Fault[Any], Option[String]] = 
         soapClient.requestResponse(scalaxb.toXML(GetWeather(city), targetNamespace, "GetWeather", defaultScope), defaultScope, baseAddress, "POST", Some(new java.net.URI("http://litwinconsulting.com/webservices/GetWeather"))) match {
           case Left(x)  => Left(x)
